@@ -1,8 +1,24 @@
 ﻿@page "/"
+@inject NotificationService notificationService
 
 <PageTitle>Index</PageTitle>
 
 <h1>Ronell Jesus Rosario Lopez (2021-0026)</h1>
 <p>Programacion Aplicada 1 2023-03</p>
 
-Welcome to your new app.
+<button @onclick ="MostrarNotificacion">Prueba</button>
+
+@code
+{
+    
+    public void MostrarNotificacion()
+    {
+        var mensaje = new NotificationMessage{
+            Severity = NotificationSeverity.Error,
+            Summary = "Notificacion Ejemplo",
+            Detail = "Esta es una prueba de notification service",
+            Duration = 4_000
+        };
+        notificationService.Notify(mensaje);
+    }
+}
