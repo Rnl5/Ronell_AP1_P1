@@ -16,6 +16,8 @@ builder.Services.AddDbContext<Context>(op => op.UseSqlite());
 
 builder.Services.AddScoped<NotificationService>();
 
+builder.Services.AddScoped<AportesBLL>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
