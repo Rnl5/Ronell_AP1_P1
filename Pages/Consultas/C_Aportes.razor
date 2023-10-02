@@ -1,0 +1,203 @@
+@page "/consultaAportes"
+@inject AportesBLL aportesBLL
+@inject NotificationService notificationService
+
+<PageTitle>Consulta de Aportes</PageTitle>
+<div class ="container">
+    <div class = "card">
+        <head>
+            <div class = "card-header">
+                <h4>Consulta de Aportes</h4>
+            </div>
+        </head>
+
+        <body>
+            <div class = "card-header">
+                <div class ="row">
+                    <div class ="col">
+                        <label>Desde</label>
+                        <InputDate @bind-Value="Desde" class ="form-control"></InputDate>
+                    </div>
+                    <div class="col">
+                        <label>Hasta</label>
+                        <InputDate @bind-Value = "Hasta"class = "form-control"></InputDate>
+                    </div>
+                
+
+                    <div class = "row">
+                        <div class ="col">
+                            <label>Campo:</label>
+                            <InputSelect class="form-select" @bind-Value="opc" aria-placeholder="Campo:">
+                                <label>Campo:</label>
+                                <option selected value ="1">Aporte Id</option>
+                                <option value="2">Persona</option>
+                                <option value="3">Monto</option>
+                            </InputSelect>
+                        </div>
+
+                        <div class="col">
+
+                            @switch(opc)
+                            {
+                                case 1:
+                                    <label>Filtrar:</label>
+                                    <InputNumber class="form-control" @bind-Value="aporte.AporteId"></InputNumber>
+                                    Total =0.0;
+                                    break;
+                                case 2:
+                                    <label>Filtrar:</label>
+                                    <InputTextArea class ="form-control" @bind-Value="aporte.Persona"></InputTextArea>
+                                    Total =0.0;
+                                    break;
+                                case 3:
+                                    <label>Filtrar:</label>
+                                    <InputTextArea class="form-control" @bind-Value="aporte.Observacion"></InputTextArea>
+                                    Total =0.0;
+                                    break;
+                                 case 4:
+                                    <label>Filtrar:</label>
+                                    <InputNumber class="form-control" @bind-Value="aporte.Monto"></InputNumber>
+                                    Total =0.0;
+                                    break;
+                            }
+                        </div>
+                        
+                            <div class ="col">
+                                <div class ="btn-group">
+                                    <button type="submit" class= "btn btn-outline-primary" @onclick ="Buscar">Buscar <i class="oi oi-file"></i></button> 
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="card">
+                <div class ="card-body">
+                    <table class="table">
+
+                    <thead>
+                        <tr>
+                            <th>Id Ingreso</th>
+                            <th>Fecha</th>
+                            <th>Concepto</th>
+                            <th>Monto</th>
+                            <th>Modificar</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        @foreach(var ingreso in aportes)
+                        {
+                            <tr>
+                                <td>@aporte.AporteId</td>
+                                <td>@aporte.Fecha</td>
+                                <td>@aporte.Persona</td>
+                                <td>@aporte.Observacion</td>
+                                <td>@aporte.Monto</td>
+                                <td><a href="/editarIngresos/@ingreso.AporteId"> <i>Editar</i> </a> </td>
+                                <td><button type="submit" class = "btn btn-outline-danger" @onclick="() => Eliminar(aporte)">Eliminar<i class="oi oi-trash" @aporte.AporteId/> </button></td>
+                            </tr>
+                            Total += ingreso.Monto;
+                        }
+
+                        <tr>
+                            <td>Total: @Total</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </body>
+    </div>
+</div>
+
+@code
+{
+    public List<Aportes> aportes {get; set;} = new List<Aportes>();
+
+    public Aportes aporte {get; set;} = new Aportes();
+    
+    public DateTime Desde {get; set;}
+
+    public DateTime Hasta {get; set;}
+
+    public double? Total = 0.0;
+
+    public short opc = 0;
+
+    protected override void OnInitialized()
+    {
+        aportes = aportesBLL.GetAportes(i => true);
+
+        Desde = DateTime.Now.AddMonths(-1);
+        Hasta = DateTime.Now;
+    }
+
+    
+    public void Buscar()
+    {
+        switch(opc)
+        {
+            case 1:
+                if(aporte.AporteId >= 1)
+                {
+                    aportes = aportesBLL.GetAportes(a => a.AporteId == aporte.AporteId && a.Fecha >= Desde.Date && a.Fecha <= Hasta);
+                }
+                else
+                {
+                    aportes = aportesBLL.GetAportes(a => a.Fecha >= Desde.Date && a.Fecha <= Hasta);
+                }
+                break;
+            case 2:
+                if(!string.IsNullOrEmpty(aporte.Persona))
+                {
+                    aportes = aportesBLL.GetAportes(a => a.Persona.ToLower().Contains(aporte.Persona.ToLower()) && a.Fecha >= Desde.Date && a.Fecha <= Hasta);
+                }
+                else
+                {
+                    aportes = aportesBLL.GetAportes(a => a.Fecha >= Desde.Date && a.Fecha <= Hasta);
+                }
+                break;
+            case 3:
+                if(!string.IsNullOrEmpty(aporte.Observacion))
+                {
+                    aportes = aportesBLL.GetAportes(a => a.Observacion.ToLower().Contains(aporte.Observacion.ToLower()) && a.Fecha >= Desde.Date && a.Fecha <= Hasta);
+                }
+                else
+                {
+                    aportes = aportesBLL.GetAportes(a => a.Fecha >= Desde.Date && a.Fecha <= Hasta);
+                }
+                break;
+            
+            case 4:
+                if((aporte.Monto) != 0.0)
+                {
+                    aportes = aportesBLL.GetAportes(a => a.Monto == aporte.Monto && a.Fecha >= Desde.Date && a.Fecha <= Hasta);
+                }
+                else
+                {
+                    aportes = aportesBLL.GetAportes(a => a.Fecha >= Desde.Date && a.Fecha <= Hasta);
+                }
+                break;
+        }
+        Total = 0.0;
+    }
+
+    public void Eliminar(Aportes eliminado)
+    {
+        if(aportesBLL.Eliminar(eliminado))
+        {
+            var mensaje = new NotificationMessage
+            {
+            Severity = NotificationSeverity.Error,
+            Summary = "Exito al eliminar",
+            Detail = "Se ha eliminado correctamente el ingreso",
+            Duration = 4_000
+            };
+        notificationService.Notify(mensaje);
+        }
+        Total = 0.0;
+        aportes = aportesBLL.GetAportes(i => true);
+    }
+}
