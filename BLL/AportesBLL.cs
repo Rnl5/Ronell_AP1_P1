@@ -13,12 +13,12 @@ public class AportesBLL
 
     public bool YaExiste(int AporteId)
     {
-        return _context.aportes.Any(i => i.AporteId == AporteId);
+        return _context.Aportes.Any(i => i.AporteId == AporteId);
     }
 
     public bool Insertar(Aportes aportes)
     {
-        _context.aportes.Add(aportes);
+        _context.Aportes.Add(aportes);
         return _context.SaveChanges() > 0;
     }
     
@@ -48,7 +48,7 @@ public class AportesBLL
 
     public Aportes? Buscar(int AporteId)
     {
-        return _context.aportes
+        return _context.Aportes
                 .Where(i => i.AporteId == AporteId)
                 .AsNoTracking()
                 .SingleOrDefault();
@@ -56,7 +56,7 @@ public class AportesBLL
 
     public List<Aportes> GetAportes(Expression<Func<Aportes, bool>> Criterio)
     {
-        return _context.aportes
+        return _context.Aportes
                 .AsNoTracking()
                 .Where(Criterio)
                 .ToList();  
@@ -64,7 +64,7 @@ public class AportesBLL
 
     public bool ExistenDatos(Aportes aportes)
     {
-        var mismosDatos = _context.aportes.Any(a => a.Fecha == aportes.Fecha || a.Persona == aportes.Persona || a.Observacion == aportes.Observacion || a.Monto == aportes.Monto);
+        var mismosDatos = _context.Aportes.Any(a => a.Fecha == aportes.Fecha || a.Persona == aportes.Persona || a.Observacion == aportes.Observacion || a.Monto == aportes.Monto);
         return !mismosDatos;
     }
 }
