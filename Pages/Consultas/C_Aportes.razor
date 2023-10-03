@@ -2,8 +2,8 @@
 @inject AportesBLL aportesBLL
 @inject NotificationService notificationService
 
-
 <PageTitle>Consulta de Aportes</PageTitle>
+
 <div class ="container">
     <div class = "card">
         <head>
@@ -15,17 +15,19 @@
         <body>
             <div class = "card-header">
                 <div class ="row">
+
                     <div class ="col">
                         <label>Desde</label>
                         <InputDate @bind-Value="Desde" class ="form-control"></InputDate>
                     </div>
+
                     <div class="col">
                         <label>Hasta</label>
                         <InputDate @bind-Value = "Hasta"class = "form-control"></InputDate>
                     </div>
-                
-
+                    
                     <div class = "row">
+
                         <div class ="col">
                             <label>Campo:</label>
                             <InputSelect class="form-select" @bind-Value="opc" aria-placeholder="Campo:">
@@ -36,17 +38,16 @@
                         </div>
 
                         <div class="col">
-
+                            <label>Filtrar:</label>
+                            <InputText class="form-control" @bind-Value="aporte.Persona"></InputText>
                             @switch(opc)
                             {
                                 case 1:
-                                    <label>Filtrar:</label>
                                     <InputText class="form-control" @bind-Value="aporte.Persona"></InputText>
                                     Conteo = 0;
                                     Total =0.0;
                                     break;
                                 case 2:
-                                    <label>Filtrar:</label>
                                     <InputNumber class ="form-control" @bind-Value="aporte.AporteId"></InputNumber>
                                     Conteo = 0;
                                     Total =0.0;
@@ -54,20 +55,18 @@
                             }
                         </div>
                         
-                            <div class ="col">
-                                <div class ="btn-group">
-                                   <button type="submit" class= "btn btn-outline-primary" @onclick ="Buscar"> <i class="oi oi-reload"></i> Buscar</button> 
-                                </div>
+                        <div class ="col">
+                            <div class ="btn-group">
+                                <button type="submit" class= "btn btn-outline-primary" @onclick ="Buscar"> <i class="oi oi-reload"></i> Buscar</button> 
                             </div>
+                        </div>
                     </div>
                 </div>
-                
             </div>
 
             <div class="card">
                 <div class ="card-body">
                     <table class="table">
-
                     <thead>
                         <tr>
                             <th>Id Aporte</th>
@@ -79,12 +78,11 @@
                     </thead>
                     
                     <tbody>
-                        
                         @foreach(var aporte in aportes)
                         {
                             <tr>
                                 <td>@aporte.AporteId</td>
-                                <td>@aporte.Fecha</td>
+                                <td>@aporte.Fecha.ToString("dd/MM/yyyy")</td>
                                 <td>@aporte.Persona</td>
                                 <td>@aporte.Observacion</td>
                                 <td>@aporte.Monto</td>
@@ -109,6 +107,7 @@
     </div>
 </div>
 
+
 @code
 {
     public List<Aportes> aportes {get; set;} = new List<Aportes>();
@@ -132,9 +131,10 @@
         Hasta = DateTime.Now;
     }
 
-    
     public void Buscar()
     {
+        Conteo = 0;
+        Total = 0.0;
         switch(opc)
         {
             case 1:
@@ -160,23 +160,5 @@
         }
         Conteo = 0;
         Total = 0.0;
-    }
-
-    public void Eliminar(Aportes eliminado)
-    {
-        if(aportesBLL.Eliminar(eliminado))
-        {
-            var mensaje = new NotificationMessage
-            {
-            Severity = NotificationSeverity.Error,
-            Summary = "Exito al eliminar",
-            Detail = "Se ha eliminado correctamente el aporte",
-            Duration = 4_000
-            };
-        notificationService.Notify(mensaje);
-        }
-        Conteo = 0;
-        Total = 0.0;
-        aportes = aportesBLL.GetAportes(a => true);
     }
 }

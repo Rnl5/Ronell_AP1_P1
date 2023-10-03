@@ -13,7 +13,7 @@ public class AportesBLL
 
     public bool YaExiste(int AporteId)
     {
-        return _context.Aportes.Any(i => i.AporteId == AporteId);
+        return _context.Aportes.Any(a => a.AporteId == AporteId);
     }
 
     public bool Insertar(Aportes aportes)
@@ -49,7 +49,7 @@ public class AportesBLL
     public Aportes? Buscar(int AporteId)
     {
         return _context.Aportes
-                .Where(i => i.AporteId == AporteId)
+                .Where(a => a.AporteId == AporteId)
                 .AsNoTracking()
                 .SingleOrDefault();
     }

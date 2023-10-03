@@ -11,13 +11,15 @@
 
     <div class ="container">
         <div class ="card">
-            <div class="card-header">
-                <h1>Registro de Aportes</h1>
-            </div>
-            
+            <head>
+                <div class="card-header">
+                    <h1>Registro de Aportes</h1>
+                </div>
+            </head>
             <body>
                 <div class = "card-body">
                     <div class ="row">
+
                         <div class="col">
                             <label>Aporte Id: </label>
                             <div class ="input-group mb-3">
@@ -25,6 +27,7 @@
                                 <button type="button" @onclick="Buscar" class = "btn btn-outline-primary" id="BotonBuscarId"><i class="oi oi-magnifying-glass"/> </button>
                             </div>
                         </div>
+
                         <div class ="col">
                             <div class = "input-group-mb-3">
                                 <label>Fecha:</label>
@@ -64,14 +67,8 @@
 </EditForm>
 
 
-
-
-
-
-
 @code
 {
-
     [Parameter]
     public int AporteId{get; set;}
 
@@ -160,18 +157,15 @@
     public bool Validar()
     {
         return aportes.Fecha > DateTime.Now ||
-            aportes.AporteId <= 0 ||
-           aportes.Monto < 0;
+            aportes.AporteId < 0 ||
+           aportes.Monto <= 0;
     }
 
     public bool CasillasVacias()
     {
         return string.IsNullOrWhiteSpace(aportes.Persona) ||
         string.IsNullOrWhiteSpace(aportes.Observacion) ||
-        double.IsNegative(aportes.Monto) ||
         string.IsNullOrEmpty(aportes.Persona) ||
         string.IsNullOrEmpty(aportes.Observacion);
     }
-
-
 }

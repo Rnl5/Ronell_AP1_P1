@@ -10,7 +10,7 @@ public class Aportes
     public string? Persona {get; set;}
 
     [Required(ErrorMessage ="Debe de insertar una fecha")]
-    public DateTime? Fecha {get; set;} = DateTime.Now;
+    public DateTime Fecha {get; set;} = DateTime.Now;
 
     [Required(ErrorMessage ="Es obligatorio insertar una observacion")]
     [MinLength(5, ErrorMessage ="Debe de contener minimo {1} caracteres")]
