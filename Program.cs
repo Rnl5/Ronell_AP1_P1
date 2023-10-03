@@ -12,7 +12,7 @@ builder.Services.AddServerSideBlazor();
 
 var ConStr = builder.Configuration.GetConnectionString("ConStr");
 
-builder.Services.AddDbContext<Context>(op => op.UseSqlite());
+builder.Services.AddDbContext<Context>(op => op.UseSqlite(ConStr));
 
 builder.Services.AddScoped<NotificationService>();
 

@@ -27,8 +27,7 @@ namespace Ronell_AP1_P1.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<double?>("Monto")
-                        .IsRequired()
+                    b.Property<double>("Monto")
                         .HasColumnType("REAL");
 
                     b.Property<string>("Observacion")

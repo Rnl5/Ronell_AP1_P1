@@ -11,7 +11,7 @@ using Ronell_AP1_P1.DAL;
 namespace Ronell_AP1_P1.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20231002235411_Inicial")]
+    [Migration("20231003013554_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
@@ -30,8 +30,7 @@ namespace Ronell_AP1_P1.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<double?>("Monto")
-                        .IsRequired()
+                    b.Property<double>("Monto")
                         .HasColumnType("REAL");
 
                     b.Property<string>("Observacion")
