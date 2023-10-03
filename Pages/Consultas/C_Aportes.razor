@@ -29,9 +29,8 @@
                             <label>Campo:</label>
                             <InputSelect class="form-select" @bind-Value="opc" aria-placeholder="Campo:">
                                 <label>Campo:</label>
-                                <option selected value ="1">Aporte Id</option>
-                                <option value="2">Persona</option>
-                                <option value="3">Monto</option>
+                                <option value ="1" selected>Persona</option>
+                                <option value="2">Aporte Id</option>
                             </InputSelect>
                         </div>
 
@@ -41,22 +40,12 @@
                             {
                                 case 1:
                                     <label>Filtrar:</label>
-                                    <InputNumber class="form-control" @bind-Value="aporte.AporteId"></InputNumber>
+                                    <InputText class="form-control" @bind-Value="aporte.Persona"></InputText>
                                     Total =0.0;
                                     break;
                                 case 2:
                                     <label>Filtrar:</label>
-                                    <InputTextArea class ="form-control" @bind-Value="aporte.Persona"></InputTextArea>
-                                    Total =0.0;
-                                    break;
-                                case 3:
-                                    <label>Filtrar:</label>
-                                    <InputTextArea class="form-control" @bind-Value="aporte.Observacion"></InputTextArea>
-                                    Total =0.0;
-                                    break;
-                                 case 4:
-                                    <label>Filtrar:</label>
-                                    <InputNumber class="form-control" @bind-Value="aporte.Monto"></InputNumber>
+                                    <InputNumber class ="form-control" @bind-Value="aporte.AporteId"></InputNumber>
                                     Total =0.0;
                                     break;
                             }
@@ -83,13 +72,11 @@
                             <th>Persona</th>
                             <th>Observaci&oacute;n</th>
                             <th>Monto</th>
-                            <th>Modificar</th>
-                            <th>Eliminar</th>
                         </tr>
                     </thead>
                     
                     <tbody>
-                        @foreach(var ingreso in aportes)
+                        @foreach(var aporte in aportes)
                         {
                             <tr>
                                 <td>@aporte.AporteId</td>
@@ -97,10 +84,8 @@
                                 <td>@aporte.Persona</td>
                                 <td>@aporte.Observacion</td>
                                 <td>@aporte.Monto</td>
-                                <td><a href="/editarAportes/@aporte.AporteId"> <i>Editar</i> </a> </td>
-                                <td><button type="submit" class = "btn btn-outline-danger" @onclick="() => Eliminar(aporte)">Eliminar<i class="oi oi-trash" @aporte.AporteId/> </button></td>
                             </tr>
-                            Total += ingreso.Monto;
+                            Total += aporte.Monto;
                         }
 
                         <tr>
@@ -142,16 +127,6 @@
         switch(opc)
         {
             case 1:
-                if(aporte.AporteId >= 1)
-                {
-                    aportes = aportesBLL.GetAportes(a => a.AporteId == aporte.AporteId && a.Fecha >= Desde.Date && a.Fecha <= Hasta);
-                }
-                else
-                {
-                    aportes = aportesBLL.GetAportes(a => a.Fecha >= Desde.Date && a.Fecha <= Hasta);
-                }
-                break;
-            case 2:
                 if(!string.IsNullOrEmpty(aporte.Persona))
                 {
                     aportes = aportesBLL.GetAportes(a => a.Persona.ToLower().Contains(aporte.Persona.ToLower()) && a.Fecha >= Desde.Date && a.Fecha <= Hasta);
@@ -161,21 +136,10 @@
                     aportes = aportesBLL.GetAportes(a => a.Fecha >= Desde.Date && a.Fecha <= Hasta);
                 }
                 break;
-            case 3:
-                if(!string.IsNullOrEmpty(aporte.Observacion))
+            case 2:
+                if(aporte.AporteId >= 1)
                 {
-                    aportes = aportesBLL.GetAportes(a => a.Observacion.ToLower().Contains(aporte.Observacion.ToLower()) && a.Fecha >= Desde.Date && a.Fecha <= Hasta);
-                }
-                else
-                {
-                    aportes = aportesBLL.GetAportes(a => a.Fecha >= Desde.Date && a.Fecha <= Hasta);
-                }
-                break;
-            
-            case 4:
-                if((aporte.Monto) != 0.0)
-                {
-                    aportes = aportesBLL.GetAportes(a => a.Monto == aporte.Monto && a.Fecha >= Desde.Date && a.Fecha <= Hasta);
+                    aportes = aportesBLL.GetAportes(a => a.AporteId == aporte.AporteId && a.Fecha >= Desde.Date && a.Fecha <= Hasta);
                 }
                 else
                 {
@@ -194,7 +158,7 @@
             {
             Severity = NotificationSeverity.Error,
             Summary = "Exito al eliminar",
-            Detail = "Se ha eliminado correctamente el ingreso",
+            Detail = "Se ha eliminado correctamente el aporte",
             Duration = 4_000
             };
         notificationService.Notify(mensaje);
