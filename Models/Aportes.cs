@@ -6,7 +6,7 @@ public class Aportes
     public int AporteId {get; set;}
 
     [Required(ErrorMessage ="Es obligatorio insertar el nombre completo de la persona en este campo")]
-    [RegularExpression("@[a-zA-Z]$")]
+    [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage ="Debe de insertar un nombre valido")]
     public string? Persona {get; set;}
 
     [Required(ErrorMessage ="Debe de insertar una fecha")]
@@ -18,5 +18,5 @@ public class Aportes
     public string? Observacion {get; set;}
 
     [Required(ErrorMessage ="Debe de insertar un monto")]
-    public double? Monto {get; set;}
+    public double Monto {get; set;}
 }
