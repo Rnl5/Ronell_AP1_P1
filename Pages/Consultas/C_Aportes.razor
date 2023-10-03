@@ -2,6 +2,7 @@
 @inject AportesBLL aportesBLL
 @inject NotificationService notificationService
 
+
 <PageTitle>Consulta de Aportes</PageTitle>
 <div class ="container">
     <div class = "card">
@@ -41,11 +42,13 @@
                                 case 1:
                                     <label>Filtrar:</label>
                                     <InputText class="form-control" @bind-Value="aporte.Persona"></InputText>
+                                    Conteo = 0;
                                     Total =0.0;
                                     break;
                                 case 2:
                                     <label>Filtrar:</label>
                                     <InputNumber class ="form-control" @bind-Value="aporte.AporteId"></InputNumber>
+                                    Conteo = 0;
                                     Total =0.0;
                                     break;
                             }
@@ -53,7 +56,7 @@
                         
                             <div class ="col">
                                 <div class ="btn-group">
-                                    <button type="submit" class= "btn btn-outline-primary" @onclick ="Buscar">Buscar <i class="oi oi-file"></i></button> 
+                                   <button type="submit" class= "btn btn-outline-primary" @onclick ="Buscar"> <i class="oi oi-reload"></i> Buscar</button> 
                                 </div>
                             </div>
                     </div>
@@ -76,6 +79,7 @@
                     </thead>
                     
                     <tbody>
+                        
                         @foreach(var aporte in aportes)
                         {
                             <tr>
@@ -84,11 +88,17 @@
                                 <td>@aporte.Persona</td>
                                 <td>@aporte.Observacion</td>
                                 <td>@aporte.Monto</td>
+                                <td><a href="/registroAportes/@aporte.AporteId"><button type ="button" class ="btn btn-outline-primary"><i class="oi oi-eye" ></i> Ver</button></a></td>
                             </tr>
+                            Conteo++;
                             Total += aporte.Monto;
                         }
 
                         <tr>
+                            <td>Conteo: @Conteo</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             <td>Total: @Total</td>
                         </tr>
                     </tbody>
@@ -110,6 +120,7 @@
     public DateTime Hasta {get; set;}
 
     public double? Total = 0.0;
+    public int Conteo = 0;
 
     public short opc = 0;
 
@@ -147,6 +158,7 @@
                 }
                 break;
         }
+        Conteo = 0;
         Total = 0.0;
     }
 
@@ -163,7 +175,8 @@
             };
         notificationService.Notify(mensaje);
         }
+        Conteo = 0;
         Total = 0.0;
-        aportes = aportesBLL.GetAportes(i => true);
+        aportes = aportesBLL.GetAportes(a => true);
     }
 }
