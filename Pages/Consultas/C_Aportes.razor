@@ -78,11 +78,13 @@
 
                     <thead>
                         <tr>
-                            <th>Id Ingreso</th>
+                            <th>Id Aporte</th>
                             <th>Fecha</th>
-                            <th>Concepto</th>
+                            <th>Persona</th>
+                            <th>Observaci&oacute;n</th>
                             <th>Monto</th>
                             <th>Modificar</th>
+                            <th>Eliminar</th>
                         </tr>
                     </thead>
                     
@@ -95,7 +97,7 @@
                                 <td>@aporte.Persona</td>
                                 <td>@aporte.Observacion</td>
                                 <td>@aporte.Monto</td>
-                                <td><a href="/editarIngresos/@ingreso.AporteId"> <i>Editar</i> </a> </td>
+                                <td><a href="/editarAportes/@aporte.AporteId"> <i>Editar</i> </a> </td>
                                 <td><button type="submit" class = "btn btn-outline-danger" @onclick="() => Eliminar(aporte)">Eliminar<i class="oi oi-trash" @aporte.AporteId/> </button></td>
                             </tr>
                             Total += ingreso.Monto;

@@ -18,40 +18,40 @@
                 <div class = "card-body">
                     <div class ="row">
                         <div class="col">
-                            <div class="input-group-mb-3">
-                                <label>Aporte Id:</label>
-                                <InputNumber @bind-Value="aportes.AporteId" class ="form-control" aria-describedby="BotonId"></InputNumber>
-                                <button type ="button" @onclick="Buscar"class ="btn btn-outline-primary"><i class ="oi oi-magnifying-glass"></i></button>
+                            <label>Aporte Id: </label>
+                            <div class ="input-group mb-3">
+                                <InputNumber @bind-Value="aportes.AporteId" class="form-control" aria-describedby="BotonBuscarId" aria-placeholder="ID"/>
+                                <button type="button" @onclick="Buscar" class = "btn btn-outline-primary" id="BotonBuscarId"><i class="oi oi-magnifying-glass"/> </button>
                             </div>
                         </div>
 
                         <div class = "input-group-mb-3">
                             <label>Fecha:</label>
                             <InputDate class = "form-control" aria-describedby="Fecha" @bind-Value ="aportes.Fecha"></InputDate>
-                            <ValidationMessage For ="@(() => aportes.Fecha)"></ValidationMessage>
+                            <ValidationMessage For ="@(() =>aportes.Fecha)"></ValidationMessage>
                         </div>
 
                         <div class ="input-group-mb-3">
                             <label>Persona:</label>
                             <InputText @bind-Value="aportes.Persona" class ="form-control" aria-describedby="Persona" ></InputText>
-                            <ValidationMessage For ="@(() => aportes.Persona)"></ValidationMessage>
+                            <ValidationMessage For ="@(() =>aportes.Persona)"></ValidationMessage>
                         </div>
 
                         <div class="input-group-mb-3">
                             <label>Observaci&oacute;n</label>
                             <InputTextArea @bind-Value="aportes.Observacion" class ="form-control" aria-describedby="Observacion" ></InputTextArea>
-                            <ValidationMessage For ="@(() => aportes.Observacion)"></ValidationMessage>
+                            <ValidationMessage For ="@(() =>aportes.Observacion)"></ValidationMessage>
                         </div>
 
                         <div class ="input-group-mb-3">
                             <label>Monto:</label>
                             <InputNumber @bind-Value="aportes.Monto" class= "form-control" aria-describedby="Monto"></InputNumber>
-                            <ValidationMessage For = "@(() => aportes.Monto)"></ValidationMessage>
+                            <ValidationMessage For = "@(() =>aportes.Monto)"></ValidationMessage>
                         </div>
 
                         <div class ="btn btn-group">
-                            <button type ="button" @onclick="Nuevo" class ="btn btn-outline-primary">Nuevo <i class ="oi-oi-file"></i></button>
-                            <button type ="submit" @onclick="Guardar" class ="btn btn-outline-success">Guardar <i class="oi oi-document"></i></button>
+                            <button type ="button" @onclick="Nuevo" class ="btn btn-outline-primary">Nuevo <i class ="oi oi-file"></i></button>
+                            <button type ="submit" class ="btn btn-outline-success">Guardar <i class="oi oi-document"></i></button>
                             <button type ="button" @onclick="Eliminar" class ="btn btn-outline-danger">Eliminar <i class="oi oi-trash"></i></button>
                         </div>
                     </div>
@@ -60,6 +60,9 @@
         </div>
     </div>
 </EditForm>
+
+
+
 
 
 
@@ -96,7 +99,6 @@
 
     public void Guardar()
     {
-
         if(!Validar() && !CasillasVacias() && aportesBLL.Guardar(aportes) && !aportesBLL.ExistenDatos(aportes))
         {
             Nuevo();
@@ -152,7 +154,6 @@
         if(aportesBLL.Eliminar(aportes))
         {
             Nuevo();
-
             mensaje = new NotificationMessage
             {
             Severity = NotificationSeverity.Error,
@@ -162,18 +163,6 @@
             };
         notificationService.Notify(mensaje);
         }
-    }
-
-    public void MostrarNotificacion()
-    {
-        mensaje = new NotificationMessage
-        {
-            Severity = NotificationSeverity.Error,
-            Summary = "Notificacion Ejemplo",
-            Detail = "Esta es una prueba de notification service",
-            Duration = 4_000
-        };
-        notificationService.Notify(mensaje);
     }
 
     public bool Validar()
@@ -186,7 +175,9 @@
     {
         return string.IsNullOrWhiteSpace(aportes.Persona) ||
         string.IsNullOrWhiteSpace(aportes.Observacion) ||
-        aportes.Monto <= 0;
+        double.IsNegative(aportes.Monto) ||
+        string.IsNullOrEmpty(aportes.Persona) ||
+        string.IsNullOrEmpty(aportes.Observacion);
     }
 
 
